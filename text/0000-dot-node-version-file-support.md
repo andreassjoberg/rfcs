@@ -22,12 +22,15 @@ Existing Node developers are likely already familiar with different Node version
 # Details
 [details]: #details
 
-## Suggested Compatible Format
+## Compatible file format
 
-When creating the file, a format with full compatability is:
+The contents of `.node-version` will be:
 
-- single line with unix line ending
-- three part numeric version e.g. 20.18.2
+- optionally a leading `v`
+- three part numeric version (e.g. 20.18.2)
+- optionally a trailing newline (either Unix style or Windows style line endings are allowed)
+
+Any content found in addition to the above will result in an error message explaining that the `.node-version` file is malformed.
 
 A leading `v` is widely supported, so this will work with most implementations:
 
@@ -40,6 +43,20 @@ $ node --version > .node-version
 It is recommended to support optional leading `v` and any line ending [[reference](https://github.com/shadowspawn/node-version-usage#suggested-compatible-format)].  
 Allowing a leading `v` is common and gives a nice symmetry with `node --version`.  
 Allowing any line ending makes it easier for users and especially Windows users to create a compatible file.
+
+### Invalid `.node-version`
+
+When an invalid `.node-version` is found (see [Compatible file format](#compatible-file-format)), Volta will emit an error indicating, as best as we can tell, what is wrong with the file, along with it's file path. _(Implementation note: this could either be relative path or absolute path.)_
+
+Primary error cases:
+
+- Invalid semver range (e.g. `lts/*` or `20`)
+
+> An invalid semver range (`lts/*`) was detected in `./.node-version`. Please specify an exact version number (e.g. `1.0.0`).
+
+- Unsupported content (leading content, trailing content, etc)
+
+> Unsupported content (at line 2, column 1) was detected in `./.node-version`. The `.node-version` should contain only a valid semver version number.
 
 ## Inheritance from current solution
 
