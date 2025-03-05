@@ -6,34 +6,56 @@
 # Summary
 [summary]: #summary
 
-Introduce support for a `.node-version` file, enabling it as a fallback source for determining project-specific Node versions. If node version is not specified in `package.json`, fallback to `.node-version` before using global defaults.
+Introduce support for a `.node-version` file, enabling it as a fallback source for determining project-specific Node versions. If Node version is not specified in `package.json`, fallback to `.node-version` before using global defaults.
 
 # Motivation
 [motivation]: #motivation
 
-The aim is to align Volta with other popular Node version managers like fnm, which support `.node-version`. This enhances flexibility and user experience by allowing developers to specify their preferred Node versions in a widely recognized format.
+The aim is to align Volta with other popular Node version managers like [fnm](https://github.com/Schniz/fnm), [n](https://github.com/tj/n) and [asdf](https://github.com/asdf-vm/asdf-nodejs), which support `.node-version`. This enhances flexibility and user experience by allowing developers to specify their preferred Node versions in a widely recognized format.  
+A list of supporting products can be found here: <https://github.com/shadowspawn/node-version-usage>
 
 # Pedagogy
 [pedagogy]: #pedagogy
 
-Existing node developers are likely already familiar with other versioning methods like `.nvmrc`. Introducing support for `.node-version` aligns Volta with other node version managers.
+Existing Node developers are likely already familiar with different Node versioning methods. Introducing support for `.node-version` aligns Volta with other Node version managers.
 
 # Details
 [details]: #details
 
+## Suggested Compatible Format
+
+When creating the file, a format with full compatability is:
+
+- single line with unix line ending
+- three part numeric version e.g. 20.18.2
+
+A leading `v` is widely supported, so this will work with most implementations:
+
+```sh
+$ node --version
+v20.18.2
+$ node --version > .node-version
+```
+
+It is recommended to support optional leading `v` and any line ending [[reference](https://github.com/shadowspawn/node-version-usage#suggested-compatible-format)].  
+Allowing a leading `v` is common and gives a nice symmetry with `node --version`.  
+Allowing any line ending makes it easier for users and especially Windows users to create a compatible file.
+
 ## Inheritance from current solution
 
-The new feature will follow the same logic currently applied when reading a node version from `package.json`. This ensures consistency across different configuration files.
+The new feature will act as a fallback when resolving Node version, if `package.json` does not have a `volta` section specifying the Node version.
 
 ## Standardized Approach
 
 This implementation should mirror the behavior of other Node version managers, ensuring Volta remains competitive and user-friendly.
 
-## Fallback Hierarchy
+## Lookup Hierarchy
 
-Prioritize `.node-version` as fallback for determining Node versions.
-If volta is not defined in `package.json`, check `.node-version` before proceeding with global defaults.
-Continue with existing behavior if neither file specifies a version.
+The Node version lookup process should follow the order described:
+
+1. Resolve `package.json` and check its `volta.node` field.
+1. Check for the presence of `.node-version`.
+1. Fallback to the default active Node toolchain.
 
 ## Backward Compatibility
 
@@ -57,7 +79,9 @@ Develop comprehensive tests that cover various scenarios, including:
 # Critique
 [critique]: #critique
 
-By supporting .node-version, Volta will provide users with more flexibility in how they manage their Node environments, while maintaining its commitment to backward compatibility. This RFC invites feedback on the proposed implementation and any potential edge cases that might arise.
+By supporting `.node-version`, Volta will provide users with more flexibility in how they manage their Node environments, while maintaining its commitment to backward compatibility. This RFC invites feedback on the proposed implementation and any potential edge cases that might arise.
 
 # Unresolved questions
 [unresolved]: #unresolved-questions
+
+Should we also support `.nvmrc`?
