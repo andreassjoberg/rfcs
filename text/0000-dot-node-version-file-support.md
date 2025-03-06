@@ -51,12 +51,9 @@ When an invalid `.node-version` is found (see [Compatible file format](#compatib
 Primary error cases:
 
 - Invalid semver range (e.g. `lts/*` or `20`)
-
-> An invalid semver range (`lts/*`) was detected in `./.node-version`. Please specify an exact version number (e.g. `1.0.0`).
-
 - Unsupported content (leading content, trailing content, etc)
 
-> Unsupported content (at line 2, column 1) was detected in `./.node-version`. The `.node-version` should contain only a valid semver version number.
+> The .node-version file at _\<path\>_ is malformed
 
 ## Inheritance from current solution
 
