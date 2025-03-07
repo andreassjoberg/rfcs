@@ -11,7 +11,7 @@ Introduce support for a `.node-version` file, enabling it as a fallback source f
 # Motivation
 [motivation]: #motivation
 
-The aim is to align Volta with other popular Node version managers like [fnm](https://github.com/Schniz/fnm), [n](https://github.com/tj/n) and [asdf](https://github.com/asdf-vm/asdf-nodejs), which support `.node-version`. This enhances flexibility and user experience by allowing developers to specify their preferred Node versions in a widely recognized format.  
+The aim is to align Volta with other popular Node version managers like [mise](https://github.com/jdx/mise), [fnm](https://github.com/Schniz/fnm), [n](https://github.com/tj/n) and [asdf](https://github.com/asdf-vm/asdf-nodejs), which support `.node-version`. This enhances flexibility and user experience by allowing developers to specify their preferred Node versions in a widely recognized format.  
 A list of supporting products can be found here: <https://github.com/shadowspawn/node-version-usage>
 
 # Pedagogy
